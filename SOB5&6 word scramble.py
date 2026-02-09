@@ -52,7 +52,7 @@ def output_shuffled_words(chosen_list):
 
     chosen_word = chosen_list[index]
 
-    # Scramble word
+    #Shuffles the characters of 'chosen_word' by sampling all its letters in a random order and joining them back into a single string.
     shuffled_word = "".join(random.sample(chosen_word, len(chosen_word)))
 
     print("\nScrambled word:", shuffled_word)
@@ -101,5 +101,6 @@ def main():
         print("Sorry, that category does not exist!")
 
 main()
+
 
 
