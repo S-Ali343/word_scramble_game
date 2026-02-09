@@ -1,14 +1,9 @@
-"""
-This is a word scramble game. The player will choose a category and then be given a scrambled word
-from that category.They will then have to guess the unscrambled version of the word. This will go
-on for 3 rounds. Each round will tell the player whether they got the answer right or not.
-The player can also add their own words to a category.
-"""
+""" This is a word scramble game.The player will choose a category and then be given a scrambled word from that category.They will then have to guess the unscrambled version of the word.This will go on for 3 rounds.Each round will tell the player whether they got the answer right ot not """
 
-# Random module is used to select and scramble words
+#random module is used when selecting which words are unscrambled each round.It will pick a random value which corresponds to an index value and whatever the value is will be the chosen word to scramble
 import random
 
-# These are the lists of different categories each start with 10 predefined words
+#These are the lists of different categories each with 10 words which can be scrambled
 animals = ["Capybara", "Axolotl", "Pangolin", "Narwhal", "Quokka", "Fennec Fox", "Red Panda", "Manatee", "Wombat",
            "Platypus"]
 
@@ -18,86 +13,48 @@ physical_objects = ["Laptop", "Coffee Mug", "Desk Chair", "Smartphone", "Noteboo
 colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet", "Black", "White",
           "Gray"]
 
-# Dictionary linking categories to lists
+#This is the dictionary "categories" which will help with matching what the user inputs to the respective category
 categories = {
     "animals": animals,
     "physical objects": physical_objects,
-    "colors": colors
-}
+    "colors": colors}
 
-# Allow user to modify lists
-def add_words():
-        category_to_edit = input("Which category do you want to add words to? animals, physical objects, or colors? ").strip().lower()
+#This is where the user inputs which category they want to use
+category_input = str(input("Which category do you want? animals, physical objects, or colors? ")).strip().lower()
 
-        if category_to_edit in categories:
+#The initial score is defined as zero
+score = 0
 
-            print("Type words to add. Type 'stop' to finish.")
+#In this IF statement the category will be chosen and then the rounds start
+if category_input in categories:
+    chosen_list = categories[category_input]
 
-            while True:
+    #The game will go on for 3 rounds,each round a random index will be chosen and will then be shuffled and outputted to the user
+    for i in range(0,3):
 
-                new_word = input("Enter a word: ").strip()
+        index = random.randrange(0,9)
 
-                # Exit loop if user types stop
-                if new_word.lower() == "stop":
-                    break
+        chosen_word = chosen_list[index]
 
-                # Add new word to selected list
-                categories[category_to_edit].append(new_word)
+        shuffled_word = "".join(random.sample(chosen_word, len(chosen_word)))
 
-                print(f"'{new_word}' added to {category_to_edit}")
+        print(shuffled_word)
 
-def output_shuffled_words(chosen_list):
-    # Choose random word from selected list
-    index = random.randrange(0, len(chosen_list))
+        answer = str(input("Enter the unscrambled word: "))
 
-    chosen_word = chosen_list[index]
+        #the answer given will be in lower case and white spaces will be removed so that it will more likely match the unscrambled words
+        #If the answer is correct then the score will increment by 1 otherwise it will output that it is wrong
+        if answer.strip().lower() == chosen_word.lower():
+            print("Correct!!")
+            score += 1
 
-    # Scramble word
-    shuffled_word = "".join(random.sample(chosen_word, len(chosen_word)))
+        else:
+            print("WRONG!!")
 
-    print("\nScrambled word:", shuffled_word)
-    return chosen_word
-
-def main():
-    # Ask user if they want to add their own words
-    adding_words = input("Do you want to add your own words to a category? (yes/no): ").strip().lower()
-
-    if adding_words == "yes":
-        add_words()
-    else:
-        print("That category does not exist. Skipping word addition.")
-
-    # Ask user for category
-    category_input = input("\nWhich category do you want? animals, physical objects, or colors? ").strip().lower()
-
-    # Initial score
-    score = 0
-
-    # Check if category exists
-    if category_input in categories:
-
-        chosen_list = categories[category_input]
-
-        # Play 3 rounds
-        for i in range(0, 3):
-            chosen_word = output_shuffled_words(chosen_list)
-
-            # Get user answer
-            answer = input("Enter the unscrambled word: ")
-
-            # Check answer
-            if answer.strip().lower() == chosen_word.lower():
-                print("Correct!!")
-                score += 1
-
-            else:
-                print("WRONG!! The answer was:", chosen_word)
-
-        # Display final score
-        print(f"\nYou got {score} correct answers out of 3")
+    
+    print (f"You got {score} correct answers")
 
 
-    else:
-        print("Sorry, that category does not exist!")
+else:
+    print("Sorry, that category does not exist!")
 
-main()
